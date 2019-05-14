@@ -1,4 +1,5 @@
 <?php
 include '../src/php/BigFileUploader.php';
 
-echo BigFileUploader::save('/home/www/downloads');
+echo json_encode(BigFileUploader::save('/home/www/downloads'));
+?>

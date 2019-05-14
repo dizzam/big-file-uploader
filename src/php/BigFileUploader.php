@@ -76,7 +76,7 @@ class BigFileUploader
 
         $dest = empty($dest) ? $name : $dest;
         $dest = $dir . DIRECTORY_SEPARATOR . $dest;
-        if (file_exists($dest)) {
+        if(file_exists($dest)) {
             return json_encode([
                 'status'  => 2,
                 'message' => '同名文件已经存在'

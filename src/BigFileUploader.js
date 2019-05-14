@@ -1,4 +1,4 @@
-;function BigFileUploader(file, options) {
+function BigFileUploader(file, options) {
     this.file = file;
     this.options = $.extend({
         blockSize: 10,
@@ -14,24 +14,23 @@
                 this.handleError({
                     message: '请选择要上传的文件'
                 });
-
                 return false;
             }
-			var result = true;
-			$.ajax({
-				url: this.options.url,
-				async: false,
+            var result = true;
+            $.ajax({
+                url: this.options.url,
+                async: false,
                 data: {
                     name: this.file.files[0].name
                 },
                 dataType: 'json',
-				success: function(data){
-					if (data.status == 1) {
-						result = false;
-						alert("同名文件已经存在");
-					}
-				}
-			});
+                success: function(data){
+                    if (data.status == 1) {
+                        result = false;
+                        alert("同名文件已经存在");
+                    }
+                }
+            });
             return result;
         }
 
@@ -84,7 +83,6 @@
                                 percent: percent * 100
                             });
                         };
-
                         return xhr;
                     }
                 }).done(function (data) {
@@ -93,7 +91,6 @@
                             self.handleProgress({
                                 percent: 100
                             });
-
                             self.handleSuccess({
                                 message: '文件上传完成'
                             });
@@ -103,17 +100,15 @@
                         self.handleError({
                             message: data.message
                         });
-
                         deferred.reject();
                     }
                 }).fail(function () {
                     self.handleError({
                         message: '文件上传错误'
                     });
-
                     deferred.reject();
                 });
-                
+
                 return deferred.promise();
             }
         }
