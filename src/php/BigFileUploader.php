@@ -52,7 +52,7 @@ class BigFileUploader
     public static function save($dir, $dest = '')
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return (isset($_GET['name']) && file_exists($dir . DIRECTORY_SEPARATOR . $_GET['name'])) ? json_encode(["status" => 1]) : json_encode(["status" => 0]);
+            return (isset($_GET['name']) && file_exists($dir . DIRECTORY_SEPARATOR . $_GET['name'])) ? ["status" => 1] : ["status" => 0];
         }
 
         $index = isset($_POST['index']) ? intval($_POST['index']) : 0;
@@ -61,26 +61,26 @@ class BigFileUploader
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 
         if ($index < 0 || $index >= $count || empty($sum) || empty($name)) {
-            return json_encode([
+            return [
                 'status' => 1,
                 'done'   => false
-            ]);
+            ];
         }
 
         if ($_FILES['data']['error'] > 0) {
-            return json_encode([
+            return [
                 'status'  => $_FILES['data']['error'],
                 'message' => static::getErrorMessage($_FILES['data']['error'])
-            ], JSON_UNESCAPED_UNICODE);
+            ];
         }
 
         $dest = empty($dest) ? $name : $dest;
         $dest = $dir . DIRECTORY_SEPARATOR . $dest;
         if(file_exists($dest)) {
-            return json_encode([
+            return [
                 'status'  => 2,
                 'message' => '同名文件已经存在'
-            ]);
+            ];
         }
 
         move_uploaded_file($_FILES['data']['tmp_name'], sys_get_temp_dir() . DIRECTORY_SEPARATOR . $sum . '-' . $index);
@@ -89,10 +89,10 @@ class BigFileUploader
             ini_set('max_execution_time', 300); // 防止大文件运行超时
             $fd = fopen($dest, 'x');
             if (false === $fd && !flock($fd, LOCK_EX)) {
-                return json_encode([
+                return [
                     'status'  => 1,
                     'message' => '打开文件失败'
-                ]);
+                ];
             }
 
             for ($i = 0; $i < $count; $i++) {
@@ -105,9 +105,9 @@ class BigFileUploader
             fclose($fd);
         }
 
-        return json_encode([
+        return [
             'status' => 0,
             'done'   => $index + 1 == $count
-        ]);
+        ];
     }
 }
