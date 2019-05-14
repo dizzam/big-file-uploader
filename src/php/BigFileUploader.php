@@ -86,6 +86,7 @@ class BigFileUploader
         move_uploaded_file($_FILES['data']['tmp_name'], sys_get_temp_dir() . DIRECTORY_SEPARATOR . $sum . '-' . $index);
 
         if ($index + 1 == $count) {
+            ini_set('max_execution_time', 300); // 防止大文件运行超时
             $fd = fopen($dest, 'x');
             if (false === $fd && !flock($fd, LOCK_EX)) {
                 return json_encode([
