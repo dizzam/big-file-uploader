@@ -17,8 +17,22 @@
 
                 return false;
             }
-
-            return true;
+			var result = true;
+			$.ajax({
+				url: this.options.url,
+				async: false,
+                data: {
+                    name: this.file.files[0].name
+                },
+                dataType: 'json',
+				success: function(data){
+					if (data.status == 1) {
+						result = false;
+						alert("同名文件已经存在");
+					}
+				}
+			});
+            return result;
         }
 
         BigFileUploader.prototype.handleError = function (data) {
@@ -99,7 +113,7 @@
 
                     deferred.reject();
                 });
-
+                
                 return deferred.promise();
             }
         }

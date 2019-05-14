@@ -51,6 +51,10 @@ class BigFileUploader
      */
     public static function save($dir, $dest = '')
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            return (isset($_GET['name']) && file_exists($dir . DIRECTORY_SEPARATOR . $_GET['name'])) ? json_encode(["status" => 1]) : json_encode(["status" => 0]);
+        }
+
         $index = isset($_POST['index']) ? intval($_POST['index']) : 0;
         $count = isset($_POST['count']) ? intval($_POST['count']) : 0;
         $sum = isset($_POST['sum']) ? trim($_POST['sum']) : '';
@@ -69,7 +73,7 @@ class BigFileUploader
                 'message' => static::getErrorMessage($_FILES['data']['error'])
             ], JSON_UNESCAPED_UNICODE);
         }
-        
+
         $dest = empty($dest) ? $name : $dest;
         $dest = $dir . DIRECTORY_SEPARATOR . $dest;
         if (file_exists($dest)) {
