@@ -83,7 +83,7 @@ class BigFileUploader
             ]);
         }
 
-        copy($_FILES['data']['tmp_name'], sys_get_temp_dir() . DIRECTORY_SEPARATOR . $sum . '-' . $index);
+        move_uploaded_file($_FILES['data']['tmp_name'], sys_get_temp_dir() . DIRECTORY_SEPARATOR . $sum . '-' . $index);
 
         if ($index + 1 == $count) {
             $fd = fopen($dest, 'x');
